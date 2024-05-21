@@ -6,23 +6,23 @@
       <h3>Last Scores</h3>
       <div v-for="score in scores.lastScores">{{ score }}</div>
     </template>
-    <div v-else>
-        No Scores yet, start typing!
-    </div>
+    <div v-else>No Scores yet, start typing!</div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, ref, type Ref } from 'vue'
+import { defineComponent, ref } from 'vue'
 
 type Scores = { highscore: number | null; lastScores: number[] }
 
-export default {
-  name: 'scores',
-  data(): { scores: Ref<Scores> } {
+export default defineComponent({
+  name: 'Scores',
+  setup() {
+    const scores = ref<Scores>({ highscore: 111, lastScores: [43, 64, 27, 98, 55] })
+
     return {
-      scores: ref({ highscore: 111, lastScores: [43, 64, 27, 98, 55] }) as Ref<Scores>
+      scores
     }
   }
-}
+})
 </script>
