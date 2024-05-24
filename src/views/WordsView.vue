@@ -4,6 +4,8 @@ import Words from '../components/Words.vue'
 
 <template>
   <main>
-    <Words />
+    <div>
+      <Words />
+    </div>
   </main>
 </template>
