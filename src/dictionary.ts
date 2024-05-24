@@ -14,7 +14,7 @@ const url_unregelm_verb =
   'https://raw.githubusercontent.com/cpos/AlleDeutschenWoerter/main/Verben/Verben_unregelmae%C3%9Fig_Infinitiv.txt'
 
 
-export async function fetchData(url: string): Promise<string> {
+async function fetchData(url: string): Promise<string> {
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`Failed to fetch data from ${url}: ${response.statusText}`);
@@ -23,7 +23,7 @@ export async function fetchData(url: string): Promise<string> {
   return data;
 }
 
-export async function fetchAllData(): Promise<string> {
+async function fetchAllData(): Promise<string> {
   try {
     const dataSubDer = await fetchData(url_sub_sing_der);
     const dataSubDie = await fetchData(url_sub_sing_die);
@@ -38,4 +38,25 @@ export async function fetchAllData(): Promise<string> {
   } catch (error) {
     throw error;
   }
+}
+
+function toArray(words: string): string[] {
+  const wordsArray = words.split('\n').filter((word) => word.trim().length > 0);
+  return wordsArray;
+}
+
+function toRandomWords(wordsArray: string[], amount: number): string {
+  let words = '';
+  for (let i = 0; i < amount; i++) {
+    const random = Math.floor(Math.random() * (wordsArray.length - 1));
+    const word = wordsArray[random];
+    words = words + ' ' + word;
+  }
+  return words;
+}
+
+export async function getRandomWords(amount:number) {
+  const allData = await fetchAllData();
+  const words = toRandomWords(toArray(allData), amount);
+  return words;
 }

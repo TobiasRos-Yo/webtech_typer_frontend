@@ -8,7 +8,7 @@
   
   <script lang="ts">
   import { defineComponent, ref, onMounted } from 'vue';
-  import { fetchAllData } from '../dictionary';
+  import { getRandomWords } from '../dictionary';
   
   export default defineComponent({
     name: 'Words',
@@ -17,7 +17,7 @@
   
       onMounted(async () => {
         try {
-          words.value = await fetchAllData();
+          words.value = await getRandomWords(10);
         } catch (error) {
           console.error('Error fetching words:', error);
         }
