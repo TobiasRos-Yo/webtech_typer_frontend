@@ -7,3 +7,7 @@ import Scores from '../components/Scores.vue'
     <Scores />
   </main>
 </template>
+
+<style scoped>
+
+</style>
