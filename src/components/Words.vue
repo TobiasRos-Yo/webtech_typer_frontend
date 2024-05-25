@@ -8,7 +8,7 @@
   
   <script lang="ts">
   import { defineComponent, ref, onMounted } from 'vue';
-  import { getRandomWords } from '../dictionary';
+  import { getRandomWords } from '@/dictionary';
   
   export default defineComponent({
     name: 'Words',

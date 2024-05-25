@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import {defineComponent, onMounted, type Ref, ref} from 'vue'
+import {onMounted, type Ref, ref} from 'vue'
 import axios, {type AxiosResponse} from "axios";
 
 type Score = { score: number; isHighscore: boolean }
