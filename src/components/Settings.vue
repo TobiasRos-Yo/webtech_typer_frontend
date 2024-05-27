@@ -1,5 +1,6 @@
 <script setup lang="ts">
 
+import {RouterLink} from "vue-router";
 </script>
 
 <template>
@@ -24,6 +25,11 @@
       </div>
       <div class="col">Modus</div>
       <div class="col">Anzahl/Zeit</div>
+      <div class="col">
+        <RouterLink to="/scores" class="button">
+          Scores
+        </RouterLink>
+      </div>
     </div>
   </div>
 </template>

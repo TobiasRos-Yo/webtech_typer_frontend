@@ -1,9 +1,8 @@
-<template>
-    <div>
-      <h2>Fetched Words</h2>
-      <pre v-if="words">{{ words }}</pre>
-      <p v-else>Loading...</p>
-    </div>
+  <template>
+      <div>
+        <pre  class="words-box" v-if="words">{{ words }}</pre>
+        <p v-else>Loading...</p>
+      </div>
   </template>
   
   <script lang="ts">
@@ -17,7 +16,7 @@
   
       onMounted(async () => {
         try {
-          words.value = await getRandomWords(10);
+          words.value = await getRandomWords(30);//TODO amount = Value vom Dropdown von Anzahl
         } catch (error) {
           console.error('Error fetching words:', error);
         }
@@ -32,4 +31,14 @@
 
 <style scoped>
 
+.words-box {
+  font-size: 24px;
+  width: 100%;
+  padding: 20px;
+  border: 1px solid #000;
+  border-radius: 8px;
+  word-break: break-word; /* Zeilenumbruch aktivieren */
+  white-space: pre-wrap; /* Erlaubt Zeilenumbrüche in <pre> */
+  background-color: #333333;
+}
 </style>

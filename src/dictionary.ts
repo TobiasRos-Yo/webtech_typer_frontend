@@ -41,7 +41,9 @@ async function fetchAllData(): Promise<string> {
 }
 
 function toArray(words: string): string[] {
-  const wordsArray = words.split('\n').filter((word) => word.trim().length > 0);
+  const wordsArray = words.split('\n')
+      .filter((word) => word.trim().length > 0 && !word.includes("[Bearbeiten]"));//es gibt Einträge wie "A[Bearbeiten] - Z[Bearbeiten] (werden entfernt)
+  console.log("wordsArray Length:" + wordsArray.length)//überprüfen wie viele Wörter. Angeblich: 30.336
   return wordsArray;
 }
 
@@ -58,5 +60,5 @@ function toRandomWords(wordsArray: string[], amount: number): string {
 export async function getRandomWords(amount:number) {
   const allData = await fetchAllData();
   const words = toRandomWords(toArray(allData), amount);
-  return words;
+  return words.trim();//entfernt Leerzeichen vom Anfang und Ende (nur Anfang war Problem)
 }
