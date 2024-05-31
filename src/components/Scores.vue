@@ -32,7 +32,6 @@ async function loadScores () {
   setHighscore();
 }
 
-//funktion set highscore, die aber den highscore über den höchsten score ermittelt
 function setHighscore() {
   if (scores.value.length !== 0) {
     let hscore = scores.value[0];
@@ -45,6 +44,7 @@ function setHighscore() {
     highscore.value = hscore;
   }
 }
+
 onMounted(async () => {
   await loadScores();
 })
