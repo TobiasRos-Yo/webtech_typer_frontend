@@ -2,7 +2,7 @@
   <div>
     <template v-if="highscore">
       <h2>Highscore</h2>
-      <div>{{ highscore }}</div>
+      <div>{{ highscore.score }}</div>
       <h3>Last Scores</h3>
       <div v-for="score in scores">{{ score.score }}</div>
     </template>
@@ -14,7 +14,7 @@
 import {onMounted, type Ref, ref} from 'vue'
 import axios, {type AxiosResponse} from "axios";
 
-type Score = { score: number; isHighscore: boolean }
+type Score = { score: number; isHighscore: boolean };
 
 const scores: Ref<Score[]> = ref([]);
 const highscore: Ref<Score | null> = ref(null);
@@ -28,13 +28,23 @@ async function loadScores () {
   responseData.forEach((score: Score) => {
     console.log('score:', score); // Debug: Log
     scores.value.push(score);
-    console.log('isHighscore:', score.isHighscore); // Debug: Log the highscore
-    console.log('scoress:', scores.value); // Debug: Log
-    if (score.isHighscore) highscore.value = score;
-    console.log('Highscore found:', highscore.value); // Debug: Log the highscore
   })
+  setHighscore();
 }
 
+//funktion set highscore, die aber den highscore über den höchsten score ermittelt
+function setHighscore() {
+  if (scores.value.length !== 0) {
+    let hscore = scores.value[0];
+    scores.value.forEach((score: Score) => {
+      if (score.score > hscore.score) {
+        hscore = score;
+      }
+    })
+    hscore.isHighscore = true;
+    highscore.value = hscore;
+  }
+}
 onMounted(async () => {
   await loadScores();
 })
