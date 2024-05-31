@@ -17,7 +17,7 @@
   
       const getWords = async () => {
         try {
-          words.value = await getRandomWords(wordCount.value);//TODO amount = Value vom Dropdown von Anzahl
+          words.value = await getRandomWords(wordCount.value);
         } catch (error) {
           console.error('Error fetching words:', error);
         }
