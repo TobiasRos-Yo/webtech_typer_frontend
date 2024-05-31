@@ -6,21 +6,26 @@
   </template>
   
   <script lang="ts">
-  import { defineComponent, ref, onMounted } from 'vue';
+  import {defineComponent, ref, onMounted, watch} from 'vue';
   import { getRandomWords } from '@/dictionary';
+  import {wordCount} from "@/state";
   
   export default defineComponent({
     name: 'Words',
     setup() {
       const words = ref<string | null>(null);
   
-      onMounted(async () => {
+      const getWords = async () => {
         try {
-          words.value = await getRandomWords(30);//TODO amount = Value vom Dropdown von Anzahl
+          words.value = await getRandomWords(wordCount.value);//TODO amount = Value vom Dropdown von Anzahl
         } catch (error) {
           console.error('Error fetching words:', error);
         }
-      });
+      };
+
+      onMounted(getWords);
+
+      watch(wordCount, getWords);
   
       return {
         words

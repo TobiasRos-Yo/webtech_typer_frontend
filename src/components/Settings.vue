@@ -1,6 +1,11 @@
 <script setup lang="ts">
 
 import {RouterLink} from "vue-router";
+import { wordCount} from "@/state";
+
+function updateWordCount(count: number) {
+  wordCount.value = count;
+}
 </script>
 
 <template>
@@ -50,9 +55,9 @@ import {RouterLink} from "vue-router";
             Anzahl/Zeit
           </button>
           <ul class="dropdown-menu">
-            <li><button class="dropdown-item" type="button">10 </button></li>
-            <li><button class="dropdown-item" type="button">20</button></li>
-            <li><button class="dropdown-item" type="button">50</button></li>
+            <li><button class="dropdown-item" type="button" @click="updateWordCount(10)">10 </button></li>
+            <li><button class="dropdown-item" type="button" @click="updateWordCount(25)">25</button></li>
+            <li><button class="dropdown-item" type="button" @click="updateWordCount(50)">50</button></li>
           </ul>
         </div>
       </div>
