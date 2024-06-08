@@ -6,7 +6,7 @@
       <h3>Last Scores</h3>
       <div v-for="score in scores">{{ score.score }}</div>
     </template>
-    <div v-else>No Scores yet, start typing!</div>
+    <div v-else>Loading...</div>
   </div>
 </template>
 
