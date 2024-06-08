@@ -45,8 +45,9 @@
         const input = event.key;
 
         if (input === 'Backspace') {
-          currentPosition.value--;
-          inputStatus.value[currentPosition.value] = Status.UNTYPED;
+          if (currentPosition.value !== 0) {
+            currentPosition.value--;
+            inputStatus.value[currentPosition.value] = Status.UNTYPED;          }
           return;
         }
         // Ignoriert tasten, die einen String erzeugen der länger als 1 Zeichen ist (z.B. Shift)
@@ -95,10 +96,9 @@
   font-size: 24px;
   width: 100%;
   padding: 20px;
-  border: 1px solid #000;
   border-radius: 8px;
   word-break: break-word; /* Zeilenumbruch aktivieren */
-  white-space: pre-wrap; /* Erlaubt Zeilenumbrüche in <pre> */
+  white-space: pre-line; /* Erlaubt Zeilenumbrüche in <pre> */
   background-color: #333333;
 }
 
