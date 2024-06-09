@@ -22,7 +22,7 @@
   export default defineComponent({
     name: 'Words',
     setup() {
-      const words = ref<string | null>(null);
+      const words = ref<string>('');
 
       const currentPosition = ref(0);
       const inputStatus = ref<Array<Status>>([]);
@@ -30,16 +30,20 @@
       let startTime: number | null = null;
       let endTime: number | null = null;
       let isKeyListenerAdded = ref(false);
+      let correctWordsCount = 0;
+      let wordsCheck: string[] = [];
+      let inputCheck = '';
+      let mistakes = 0;
 
       const reset = () => {
         currentPosition.value = 0;
         inputStatus.value = [];
         startTime = null;
         endTime = null;
-        if (!isKeyListenerAdded.value) {
-          window.addEventListener('keydown', checkInput);
-          isKeyListenerAdded.value = true;
-        }
+        correctWordsCount = 0;
+        inputCheck = '';
+        mistakes = 0;
+        addKeyListener();
       };
   
       const getWords = async () => {
@@ -48,6 +52,7 @@
           reset();
           inputStatus.value = new Array(words.value.length).fill(Status.UNTYPED);
           inputStatus.value[0] = Status.ACTIVE;
+          wordsCheck = words.value.split(' ');
         } catch (error) {
           console.error('Error fetching words:', error);
         }
@@ -65,6 +70,7 @@
             currentPosition.value--;
             inputStatus.value[currentPosition.value] = Status.ACTIVE;
             inputStatus.value[currentPosition.value + 1] = Status.UNTYPED;
+            inputCheck = inputCheck.slice(0, -1);
           }
           return;
         }
@@ -74,38 +80,59 @@
         }
         // ascii Überprüfung unnötig!?
 
-        const currentChar = words.value?.charAt(currentPosition.value);
-        console.log("currentChar", currentChar)
+        const currentChar = words.value.charAt(currentPosition.value);
+
+        inputCheck += input;
 
         if (input === currentChar) {
-          console.log("richtig");
           inputStatus.value[currentPosition.value] = Status.TYPED;
         } else {
-          // Handle incorrect input
-          console.error('Incorrect input');
           inputStatus.value[currentPosition.value] = Status.INCORRECT;
+          mistakes++;
         }
         currentPosition.value++;
         inputStatus.value[currentPosition.value] = Status.ACTIVE;
 
-        if (currentPosition.value === words.value?.length) {
+        if (currentPosition.value === words.value.length) {
           endTime = Date.now();
-          const time = (endTime - startTime) / 1000;
-          console.log('Time:', time);
-          window.removeEventListener('keydown', checkInput);
-          isKeyListenerAdded.value = false;
+          calcScores();
+          removeKeyListener();
           }
       };
 
-      onBeforeMount(() => {
-        window.addEventListener('keydown', checkInput);
-        isKeyListenerAdded.value = true;
-      });
+      const calcScores = () => {
+        if (endTime === null || startTime === null) {
+          return;
+        }
 
-      onBeforeUnmount(() => {
-        window.removeEventListener('keydown', checkInput);
-        isKeyListenerAdded.value = false;
-      });
+        const inputWords = inputCheck.split(' ');
+        const correctWords = inputWords.filter(word => wordsCheck.includes(word)); // Filtert die korrekten Wörter aus dem Input
+        const correctWordsCount = correctWords.length;
+        const time = (endTime - startTime) / 1000;
+        console.log('Time:', time);
+        // WPM: Anzahl der Buchstaben in den korrekten Wörtern+Leerzeichen / 5(normalisieren auf Standard Wortlänge) / Zeit * 60
+        const wpm = (correctWords.reduce((sum, word) => sum + word.length, 0) + correctWordsCount-1) / 5 / time * 60; //
+        console.log('WPM:', wpm);
+        const acc = ((words.value.length - mistakes) / words.value.length) * 100;
+        console.log('Accuracy:', acc);
+      };
+
+      const addKeyListener = () => {
+        if (!isKeyListenerAdded.value) {
+          window.addEventListener('keydown', checkInput);
+          isKeyListenerAdded.value = true;
+        }
+      };
+
+      const removeKeyListener = () => {
+        if (isKeyListenerAdded.value) {
+          window.removeEventListener('keydown', checkInput);
+          isKeyListenerAdded.value = false;
+        }
+      };
+
+      onBeforeMount(addKeyListener);
+      onBeforeUnmount(removeKeyListener);
 
       onMounted(getWords);
       watch(wordCount, getWords);
