@@ -13,8 +13,7 @@
 <script setup lang="ts">
 import {onMounted, type Ref, ref} from 'vue'
 import axios, {type AxiosResponse} from "axios";
-
-type Score = { score: number};//TODO: Gamemodes hinzufügen
+import type {Score} from "@/types";
 
 const scores: Ref<Score[]> = ref([]);
 const highscore: Ref<Score | null> = ref(null);

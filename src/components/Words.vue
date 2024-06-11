@@ -11,6 +11,8 @@
   import {defineComponent, ref, onMounted, watch, onBeforeMount, onBeforeUnmount} from 'vue';
   import { getRandomWords } from '@/dictionary';
   import {wordCount} from "@/state";
+  import type {Score} from "@/types";
+  import axios, {type AxiosResponse} from "axios";
 
   enum Status {
     ACTIVE = 'active',
@@ -30,7 +32,6 @@
       let startTime: number | null = null;
       let endTime: number | null = null;
       let isKeyListenerAdded = ref(false);
-      let correctWordsCount = 0;
       let wordsCheck: string[] = [];
       let inputCheck = '';
       let mistakes = 0;
@@ -40,7 +41,6 @@
         inputStatus.value = [];
         startTime = null;
         endTime = null;
-        correctWordsCount = 0;
         inputCheck = '';
         mistakes = 0;
         addKeyListener();
@@ -115,7 +115,20 @@
         console.log('WPM:', wpm);
         const acc = ((words.value.length - mistakes) / words.value.length) * 100;
         console.log('Accuracy:', acc);
+
+        const score: Score = {
+          score: wpm
+        }
+        saveScore(score);
       };
+
+      async function saveScore(score: Score) {
+        const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL // 'http://localhost:8080' in dev mode
+        const endpoint = baseUrl + '/typer';
+        const response: AxiosResponse = await axios.post(endpoint, score);
+        const responseData: Score = response.data;
+        console.log('Success:', responseData)
+      }
 
       const addKeyListener = () => {
         if (!isKeyListenerAdded.value) {
