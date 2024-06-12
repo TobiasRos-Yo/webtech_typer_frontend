@@ -61,10 +61,6 @@
       const checkInput = (event: KeyboardEvent) => {
         const input = event.key;
 
-        if (startTime === null){
-          startTime = Date.now();
-        }
-
         if (input === 'Backspace') {
           if (currentPosition.value !== 0) {
             currentPosition.value--;
@@ -79,6 +75,11 @@
           return;
         }
         // ascii Überprüfung unnötig!?
+
+        //Zeit wird erst mit dem ersten Buchstaben gestartet
+        if (startTime === null){
+          startTime = Date.now();
+        }
 
         const currentChar = words.value.charAt(currentPosition.value);
 
