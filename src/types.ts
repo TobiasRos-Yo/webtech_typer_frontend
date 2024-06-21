@@ -1,1 +1,1 @@
-export type Score = { score: number};//TODO: Acc, ggf. Gamemodes hinzufügen
+export type Score = { score: number, acc: number, mode: string};

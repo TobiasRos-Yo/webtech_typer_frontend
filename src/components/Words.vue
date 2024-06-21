@@ -148,7 +148,9 @@
         console.log('Accuracy:', acc);
 
         const score: Score = {
-          score: wpm.value
+          score: wpm.value,
+          acc: acc.value,
+          mode: 'test'
         }
         saveScore(score);
       };

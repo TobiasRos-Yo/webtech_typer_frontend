@@ -4,7 +4,7 @@
       <h2>Highscore</h2>
       <div>{{ highscore.score }}</div>
       <h3>Last Scores</h3>
-      <div v-for="score in scores">{{ score.score }}</div>
+      <div v-for="score in scores">Score: {{ score.score }} Acc: {{score.acc}} Mode: {{score.mode}}</div>
     </template>
     <div v-else>Loading...</div>
   </div>
