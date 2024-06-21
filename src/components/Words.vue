@@ -1,9 +1,22 @@
   <template>
       <div>
-        <pre  class="words-box" v-if="words">
-          <span v-for="(char, index) in words" :key="index" :class="inputStatus[index]">{{ char }}</span>
-        </pre>
+        <div class="words-box" v-if="words">
+          <!--hier Blur Effekt funktioniert irgendwie-->
+          <div class="score-screen" v-if="showScoreScreen" :class="{blur: showScoreScreen}">
+            <div>Time: {{ time }}s</div>
+            <div>WPM: {{ wpm }}</div>
+            <div>Accuracy: {{ acc }}%</div>
+          </div>
+            <div class="words">
+              <span v-for="(char, index) in words" :key="index" :class="inputStatus[index]">
+                {{ char }}
+              </span>
+            </div>
+        </div>
         <p v-else>Loading...</p>
+        <div class="space-restart" v-if="showScoreScreen">
+          < press space to restart >
+        </div>
       </div>
   </template>
   
@@ -29,6 +42,11 @@
       const currentPosition = ref(0);
       const inputStatus = ref<Array<Status>>([]);
 
+      const showScoreScreen = ref(false);
+      const time = ref(0);
+      const wpm = ref(0);
+      const acc = ref(0);
+
       let startTime: number | null = null;
       let endTime: number | null = null;
       let isKeyListenerAdded = ref(false);
@@ -37,13 +55,17 @@
       let mistakes = 0;
 
       const reset = () => {
+        showScoreScreen.value = false;
+        time.value = 0;
+        wpm.value = 0;
+        acc.value = 0;
+
         currentPosition.value = 0;
         inputStatus.value = [];
         startTime = null;
         endTime = null;
         inputCheck = '';
         mistakes = 0;
-        addKeyListener();
       };
   
       const getWords = async () => {
@@ -60,6 +82,14 @@
 
       const checkInput = (event: KeyboardEvent) => {
         const input = event.key;
+
+        // Wenn der Text komplett getippt wurde, und Leertaste gedrückt wird, wird alles zurückgesetzt
+        if (currentPosition.value === words.value.length) {
+          if (input === ' ') {
+            getWords();
+          }
+          return;
+        }
 
         if (input === 'Backspace') {
           if (currentPosition.value !== 0) {
@@ -97,7 +127,7 @@
         if (currentPosition.value === words.value.length) {
           endTime = Date.now();
           calcScores();
-          removeKeyListener();
+          showScoreScreen.value = true;
           }
       };
 
@@ -109,16 +139,16 @@
         const inputWords = inputCheck.split(' ');
         const correctWords = inputWords.filter(word => wordsCheck.includes(word)); // Filtert die korrekten Wörter aus dem Input
         const correctWordsCount = correctWords.length;
-        const time = (endTime - startTime) / 1000;
+        time.value = (endTime - startTime) / 1000;
         console.log('Time:', time);
         // WPM: Anzahl der Buchstaben in den korrekten Wörtern+Leerzeichen / 5(normalisieren auf Standard Wortlänge) / Zeit * 60
-        const wpm = (correctWords.reduce((sum, word) => sum + word.length, 0) + correctWordsCount-1) / 5 / time * 60; //
+        wpm.value = (correctWords.reduce((sum, word) => sum + word.length, 0) + correctWordsCount) / 5 / time.value * 60; //
         console.log('WPM:', wpm);
-        const acc = ((words.value.length - mistakes) / words.value.length) * 100;
+        acc.value = ((words.value.length - mistakes) / words.value.length) * 100;
         console.log('Accuracy:', acc);
 
         const score: Score = {
-          score: wpm
+          score: wpm.value
         }
         saveScore(score);
       };
@@ -154,7 +184,11 @@
       return {
         words,
         currentPosition,
-        inputStatus
+        inputStatus,
+        showScoreScreen,
+        time,
+        wpm,
+        acc
       };
     }
   });
@@ -163,6 +197,7 @@
 <style scoped>
 
 .words-box {
+  position: relative;
   font-size: 24px;
   width: 100%;
   padding: 20px;
@@ -170,6 +205,29 @@
   word-break: break-word; /* Zeilenumbruch aktivieren */
   white-space: pre-line; /* Erlaubt Zeilenumbrüche in <pre> */
   background-color: #333333;
+}
+
+.score-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  font-size: 20px;
+}
+
+.blur {
+  backdrop-filter: blur(10px);
+}
+
+.space-restart {
+  text-align: center;
 }
 
 .active {
