@@ -2,10 +2,16 @@
 
 import {RouterLink} from "vue-router";
 import { wordCount} from "@/state";
+import {mode} from "@/state";
 
 function updateWordCount(count: number) {
   wordCount.value = count;
 }
+
+function updateMode(diff: string) {
+  mode.value = diff;
+}
+
 </script>
 
 <template>
@@ -19,28 +25,12 @@ function updateWordCount(count: number) {
               data-bs-toggle="dropdown"
               aria-expanded="false"
           >
-            Worttyp
+            Mode
           </button>
           <ul class="dropdown-menu">
-            <li><button class="dropdown-item" type="button">Substantive</button></li>
-            <li><button class="dropdown-item" type="button">Verben</button></li>
-            <li><button class="dropdown-item" type="button">Adjektive</button></li>
-          </ul>
-        </div>
-      </div>
-      <div class="col">
-        <div class="dropdown">
-          <button
-              class="btn btn-secondary dropdown-toggle"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-          >
-            Modus
-          </button>
-          <ul class="dropdown-menu">
-            <li><button class="dropdown-item" type="button">Wortzahl</button></li>
-            <li><button class="dropdown-item" type="button">Zeit</button></li>
+            <li><button class="dropdown-item" type="button" @click="updateMode('easy')">Easy</button></li>
+            <li><button class="dropdown-item" type="button" @click="updateMode('medium')">Medium</button></li>
+            <li><button class="dropdown-item" type="button" @click="updateMode('hard')">Hard</button></li>
           </ul>
         </div>
       </div>

@@ -47,18 +47,43 @@ function toArray(words: string): string[] {
   return wordsArray;
 }
 
-function toRandomWords(wordsArray: string[], amount: number): string {
+function modeWordLength(mode: string): [number, number] {
+  let min = 1;
+  let max = 99; // 99 soll "unendlich" bedeuten
+
+  switch (mode) {
+    case 'easy': // kein min gesetzt, da schon 1
+      max = 5;
+      break;
+    case 'medium':
+      min = 6;
+      max = 10;
+      break;
+    case 'hard': // kein max gesetzt, da "unendlich"
+      min = 11;
+      break;
+    default:
+      break;
+  }
+  return [min, max];
+}
+
+function toRandomWords(wordsArray: string[], amount: number, mode: string): string {
   let words = '';
-  for (let i = 0; i < amount; i++) {
+  for (let i = 0; i < amount; i) {
     const random = Math.floor(Math.random() * (wordsArray.length - 1));
     const word = wordsArray[random];
-    words = words + ' ' + word;
+    console.log("word: " + word + " length: " + word.length + " mode: " + mode + " min: " + modeWordLength(mode)[0] + " max: " + modeWordLength(mode)[1]);
+    if (word.length >= modeWordLength(mode)[0] && word.length <= modeWordLength(mode)[1]) {
+      words = words + ' ' + word;
+      i++; // nur wenn Wortlänge passt, wird i erhöht
+    }
   }
   return words;
 }
 
-export async function getRandomWords(amount:number) {
+export async function getRandomWords(amount:number, mode:string) {
   const allData = await fetchAllData();
-  const words = toRandomWords(toArray(allData), amount);
+  const words = toRandomWords(toArray(allData), amount, mode);
   return words.trim();//entfernt Leerzeichen vom Anfang und Ende (nur Anfang war Problem)
 }

@@ -24,6 +24,7 @@
   import {defineComponent, ref, onMounted, watch, onBeforeMount, onBeforeUnmount} from 'vue';
   import { getRandomWords } from '@/dictionary';
   import {wordCount} from "@/state";
+  import { mode } from '@/state';
   import type {Score} from "@/types";
   import axios, {type AxiosResponse} from "axios";
 
@@ -70,7 +71,7 @@
   
       const getWords = async () => {
         try {
-          words.value = await getRandomWords(wordCount.value);
+          words.value = await getRandomWords(wordCount.value, mode.value);
           reset();
           inputStatus.value = new Array(words.value.length).fill(Status.UNTYPED);
           inputStatus.value[0] = Status.ACTIVE;
@@ -100,11 +101,11 @@
           }
           return;
         }
+
         // Ignoriert tasten, die einen String erzeugen der länger als 1 Zeichen ist (z.B. Shift)
         if (input.length !== 1) {
           return;
         }
-        // ascii Überprüfung unnötig!?
 
         //Zeit wird erst mit dem ersten Buchstaben gestartet
         if (startTime === null){
@@ -150,7 +151,7 @@
         const score: Score = {
           score: wpm.value,
           acc: acc.value,
-          mode: 'test'
+          mode: mode.value
         }
         saveScore(score);
       };
@@ -182,6 +183,7 @@
 
       onMounted(getWords);
       watch(wordCount, getWords);
+      watch(mode, getWords);
   
       return {
         words,
@@ -221,7 +223,7 @@
   align-items: center;
   color: white;
   text-align: center;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .blur {
