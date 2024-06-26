@@ -73,7 +73,6 @@ function toRandomWords(wordsArray: string[], amount: number, mode: string): stri
   for (let i = 0; i < amount; i) {
     const random = Math.floor(Math.random() * (wordsArray.length - 1));
     const word = wordsArray[random];
-    console.log("word: " + word + " length: " + word.length + " mode: " + mode + " min: " + modeWordLength(mode)[0] + " max: " + modeWordLength(mode)[1]);
     if (word.length >= modeWordLength(mode)[0] && word.length <= modeWordLength(mode)[1]) {
       words = words + ' ' + word;
       i++; // nur wenn Wortlänge passt, wird i erhöht
