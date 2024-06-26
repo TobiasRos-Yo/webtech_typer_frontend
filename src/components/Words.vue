@@ -140,12 +140,12 @@
         const inputWords = inputCheck.split(' ');
         const correctWords = inputWords.filter(word => wordsCheck.includes(word)); // Filtert die korrekten Wörter aus dem Input
         const correctWordsCount = correctWords.length;
-        time.value = (endTime - startTime) / 1000;
+        time.value = Math.round((endTime - startTime) / 1000);
         console.log('Time:', time);
         // WPM: Anzahl der Buchstaben in den korrekten Wörtern+Leerzeichen / 5(normalisieren auf Standard Wortlänge) / Zeit * 60
-        wpm.value = (correctWords.reduce((sum, word) => sum + word.length, 0) + correctWordsCount) / 5 / time.value * 60; //
+        wpm.value = Math.round((correctWords.reduce((sum, word) => sum + word.length, 0) + correctWordsCount) / 5 / time.value * 60); //
         console.log('WPM:', wpm);
-        acc.value = ((words.value.length - mistakes) / words.value.length) * 100; // TODO: runden
+        acc.value = Math.round(((words.value.length - mistakes) / words.value.length) * 100); // TODO: runden
         console.log('Accuracy:', acc);
 
         const score: Score = {
