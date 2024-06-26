@@ -145,7 +145,7 @@
         // WPM: Anzahl der Buchstaben in den korrekten Wörtern+Leerzeichen / 5(normalisieren auf Standard Wortlänge) / Zeit * 60
         wpm.value = (correctWords.reduce((sum, word) => sum + word.length, 0) + correctWordsCount) / 5 / time.value * 60; //
         console.log('WPM:', wpm);
-        acc.value = ((words.value.length - mistakes) / words.value.length) * 100;
+        acc.value = ((words.value.length - mistakes) / words.value.length) * 100; // TODO: runden
         console.log('Accuracy:', acc);
 
         const score: Score = {

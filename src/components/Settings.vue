@@ -15,8 +15,13 @@ function updateMode(diff: string) {
 </script>
 
 <template>
-  <div class="container text-center">
+  <div class="container">
     <div class="row">
+      <div class="col-5">
+        <RouterLink to="/scores">
+          <img id="icon" src="../assets/leaderboardiconwhite.png" alt="leaderboard" />
+        </RouterLink>
+      </div>
       <div class="col">
         <div class="dropdown">
           <button
@@ -42,7 +47,7 @@ function updateMode(diff: string) {
               data-bs-toggle="dropdown"
               aria-expanded="false"
           >
-            Anzahl/Zeit
+            Amount
           </button>
           <ul class="dropdown-menu">
             <li><button class="dropdown-item" type="button" @click="updateWordCount(10)">10 </button></li>
@@ -51,17 +56,16 @@ function updateMode(diff: string) {
           </ul>
         </div>
       </div>
-      <div class="col">
-        <RouterLink to="/scores" class="button">
-          Scores
-        </RouterLink>
-      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
 .container {
-  padding: 20px;
+  padding-bottom: 8px;
+}
+
+#icon {
+  width: 10%;
 }
 </style>
