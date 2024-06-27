@@ -1,49 +1,70 @@
 <template>
   <div>
-    <template v-if="highscore">
-      <h2>Highscore</h2>
-      <div>{{ highscore.score }}</div>
+    <template v-if="recentScores.length!=0">
+      <div class="header-container">
+        <h2>Topscores</h2>
+        <div class="dropdown">
+          <button
+              class="btn btn-secondary dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+          >
+            Mode
+          </button>
+          <ul class="dropdown-menu">
+            <li><button class="dropdown-item" type="button" @click="updateScoresMode('easy')">Easy</button></li>
+            <li><button class="dropdown-item" type="button" @click="updateScoresMode('medium')">Medium</button></li>
+            <li><button class="dropdown-item" type="button" @click="updateScoresMode('hard')">Hard</button></li>
+          </ul>
+        </div>
+      </div>
+      <div v-for="score in topScoresForSelectedMode">
+        WPM: {{ score.score }} Acc: {{score.acc}}
+      </div>
       <h3>Last Scores</h3>
-      <div v-for="score in scores">Score: {{ score.score }} Acc: {{score.acc}} Mode: {{score.mode}}</div>
+      <div v-for="score in recentScores">WPM: {{ score.score }} Acc: {{score.acc}} Mode: {{score.mode}}</div>
     </template>
     <div v-else>Loading...</div>
   </div>
 </template>
 
 <script setup lang="ts">
-import {onMounted, type Ref, ref} from 'vue'
-import axios, {type AxiosResponse} from "axios";
-import type {Score} from "@/types";
+import {computed, onMounted, type Ref, ref} from 'vue'
+import {loadScores, recentScores, topscoresEasy, topscoresMedium, topscoresHard} from '@/scoreService'
+import {selectedScoresMode} from '@/state'
 
-const scores: Ref<Score[]> = ref([]);
-const highscore: Ref<Score | null> = ref(null);
+const topScoresForSelectedMode = computed(() => {
+  switch (selectedScoresMode.value) {
+    case 'easy':
+      return topscoresEasy.value;
+    case 'medium':
+      return topscoresMedium.value;
+    case 'hard':
+      return topscoresHard.value;
+    default:
+      return [];
+  }
+});
 
-//von thing-frontend inspiriert
-async function loadScores () {
-  const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL // 'http://localhost:8080' in dev mode
-  const endpoint = baseUrl + '/typer/recentscores';
-  const response: AxiosResponse = await axios.get(endpoint);
-  const responseData: Score[] = response.data;
-  responseData.forEach((score: Score) => {
-    console.log('score:', score); // Debug: Log
-    scores.value.push(score);
-  })
-  await setHighscore();
-}
-
-async function setHighscore() {
-  const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL // 'http://localhost:8080' in dev mode
-  const endpoint = baseUrl + '/typer/highscore';
-  const response: AxiosResponse = await axios.get(endpoint);
-  highscore.value = response.data;
+function updateScoresMode(mode: string) {
+  selectedScoresMode.value = mode;
 }
 
 onMounted(async () => {
   await loadScores();
 })
-
 </script>
 
 <style scoped>
+.header-container {
+  display: flex;
+  justify-content: space-between;
+}
 
+.btn-secondary {
+  border: none;
+  appearance: none;
+  background-color: inherit;
+}
 </style>

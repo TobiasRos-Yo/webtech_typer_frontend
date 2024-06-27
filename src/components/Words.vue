@@ -26,6 +26,7 @@
   import {wordCount} from "@/state";
   import { mode } from '@/state';
   import type {Score} from "@/types";
+  import {loadScores} from "@/scoreService";
   import axios, {type AxiosResponse} from "axios";
 
   enum Status {
@@ -132,7 +133,7 @@
           }
       };
 
-      const calcScores = () => {
+      const calcScores = async () => {
         if (endTime === null || startTime === null) {
           return;
         }
@@ -153,7 +154,8 @@
           acc: acc.value,
           mode: mode.value
         }
-        saveScore(score);
+        await saveScore(score);
+        await loadScores();
       };
 
       async function saveScore(score: Score) {
@@ -227,7 +229,7 @@
 }
 
 .blur {
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(5px);
 }
 
 .space-restart {

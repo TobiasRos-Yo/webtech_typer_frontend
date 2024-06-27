@@ -3,6 +3,7 @@
 import {RouterLink} from "vue-router";
 import { wordCount} from "@/state";
 import {mode} from "@/state";
+import Scores from "@/components/Scores.vue";
 
 function updateWordCount(count: number) {
   wordCount.value = count;
@@ -18,18 +19,13 @@ function updateMode(diff: string) {
   <div class="container">
     <div class="row">
       <div class="col-5">
-        <RouterLink to="/scores">
+        <button id="leaderboardbutton" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#scoresModal" @keydown.space.prevent>
           <img id="icon" src="../assets/leaderboardiconwhite.png" alt="leaderboard" />
-        </RouterLink>
+        </button>
       </div>
       <div class="col">
         <div class="dropdown">
-          <button
-              class="btn btn-secondary dropdown-toggle"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-          >
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" @keydown.space.prevent>
             Mode
           </button>
           <ul class="dropdown-menu">
@@ -41,12 +37,7 @@ function updateMode(diff: string) {
       </div>
       <div class="col">
         <div class="dropdown">
-          <button
-              class="btn btn-secondary dropdown-toggle"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-          >
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" @keydown.space.prevent>
             Amount
           </button>
           <ul class="dropdown-menu">
@@ -58,14 +49,66 @@ function updateMode(diff: string) {
       </div>
     </div>
   </div>
+
+  <!-- popup scores Modal -->
+  <div class="modal fade" id="scoresModal" tabindex="-1" role="dialog" aria-labelledby="scoresModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="scoresModalLabel">Scores</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <Scores />
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
 .container {
-  padding-bottom: 8px;
+  padding-bottom: 1%;
+}
+
+#leaderboardbutton {
+  border: none;
+  appearance: none;
+  background-color: inherit;
+  width: 10%;
+  padding: 0;
+}
+#leaderboardbutton:focus-visible {
+  box-shadow: none;
 }
 
 #icon {
-  width: 10%;
+  width: 100%;
+}
+
+#scoresModal {
+  --bs-modal-bg: black;
+  --bs-modal-color: white;
+  backdrop-filter: blur(5px);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.close {
+  border: none;
+  appearance: none;
+  background-color: inherit;
+  color: white;
+}
+
+.btn-secondary {
+  border: none;
+  appearance: none;
+  background-color: inherit;
 }
 </style>
