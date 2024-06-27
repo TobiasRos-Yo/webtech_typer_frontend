@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, onMounted, type Ref, ref} from 'vue'
+import {computed, onMounted} from 'vue'
 import {loadScores, recentScores, topscoresEasy, topscoresMedium, topscoresHard} from '@/scoreService'
 import {selectedScoresMode} from '@/state'
 

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 
-import {RouterLink} from "vue-router";
 import { wordCount} from "@/state";
 import {mode} from "@/state";
 import Scores from "@/components/Scores.vue";
