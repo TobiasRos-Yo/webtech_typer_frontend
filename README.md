@@ -1,45 +1,15 @@
 # webtech_typer_frontend
 
-This template should help get you started developing with Vue 3 in Vite.
+Diese Webanwendung dient zum Üben um schneller und fehlerfreier zu tippen. 
+Es gibt verschiedene Schwierigkeitsgrade: Easy, Medium und Hard.
+Diese Schwierigkeitsgrade beeinflussen die Länge der Wörter.
+Man kann auch die Anzahl der Wörter einstellen, wenn man längere Texte schreiben möchte.
+Die Wörter werden zufällig generiert.
 
-## Recommended IDE Setup
+Wenn man alle Wörter getippt hat, wird das Ergebnis, bestehend aus der Zeit, WPM (Wörter pro Minute) und 
+Genauigkeit, ausgerechnet, angezeigt und in einer Datenbank gespeichert.
+Wenn man dann die Leertaste drückt, kann man nochmal neu starten.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+Wenn man sich die Ergebnisse anzeigen lässt, werden die letzten 5 Ergebnisse und 
+die besten 3 Ergebnisse basierend auf dem Schwierigkeitsgrad angezeigt. 
+Hier kann man auch aussuchen von welchem Schwierigkeitsgrad man die Ergebnisse sehen möchte.
