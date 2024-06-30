@@ -25,7 +25,7 @@
       <h3>Last Scores</h3>
       <div v-for="score in recentScores">WPM: {{ score.score }} Acc: {{score.acc}} Mode: {{score.mode}}</div>
     </template>
-    <div v-else>Loading...</div>
+    <div v-else>No Scores yet, start typing!</div>
   </div>
 </template>
 
